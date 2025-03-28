@@ -10,7 +10,7 @@ type Cutout struct {
 	TileWidth    int
 }
 
-func NewCutout(sheetHeight, sheetWidth int, tilesPerRow, numberOfRows int) *Cutout {
+func NewCutout(sheetWidth, sheetHeight int, tilesPerRow, numberOfRows int) *Cutout {
 
 	tileWidth := sheetWidth / tilesPerRow
 	tileHeight := sheetHeight / numberOfRows

@@ -1,4 +1,4 @@
-Camera -> x, y
+Camera -> x, y, follow, constrained, pan, zoom, shake
 Sprite cutter -> cutout spritesheets, 
 Animator -> control and build character, object animations (rate, other params)
 Collisons

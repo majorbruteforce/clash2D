@@ -12,6 +12,16 @@ import (
 	utils "clash2D/pkg"
 )
 
+const (
+	frameInterval float64 = 0.2 // in s
+	FPS           float64 = 0.017
+)
+
+var (
+	drawCount, frame = 0, 0
+	tile             *ebiten.Image
+)
+
 type Game struct {
 	mapCutout *utils.Cutout
 	mapImage  *ebiten.Image
@@ -23,13 +33,21 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	tileX := g.mapCutout.Coordinates[115].X
-	tileY := g.mapCutout.Coordinates[115].Y
+	if drawCount == 0 {
+		row := 0
+		tileX := g.mapCutout.Coordinates[frame].X
+		tileY := g.mapCutout.Coordinates[frame].Y + row * g.mapCutout.TileHeight
+		tile = g.mapImage.SubImage(image.Rect(tileX, tileY, tileX+g.mapCutout.TileWidth, tileY+g.mapCutout.TileHeight)).(*ebiten.Image)
 
-	tile := g.mapImage.SubImage(image.Rect(tileX, tileY, tileX+g.mapCutout.TileWidth, tileY+g.mapCutout.TileHeight)).(*ebiten.Image)
+		frame++
+		frame %= 8
+	}
 
 	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(float64(160-g.mapCutout.TileWidth/2), float64(120-g.mapCutout.TileHeight/2))
 	screen.DrawImage(tile, op)
+	drawCount++
+	drawCount %= 6
 
 }
 
@@ -39,14 +57,14 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func main() {
 
-	img, _, err := ebitenutil.NewImageFromFile("./static/assets/tileset.png")
+	img, _, err := ebitenutil.NewImageFromFile("./static/assets/8Direction_TopDown_Character Sprites_ByBossNelNel/SpriteSheet.png")
 	if err != nil {
 		log.Fatal(err)
 	}
-	ebiten.SetWindowSize(320, 240)
+	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Tilemap Test")
 	game := &Game{
-		mapCutout: utils.NewCutout(352, 352, 11, 11),
+		mapCutout: utils.NewCutout(209, 326, 9, 9),
 		mapImage:  img,
 	}
 
