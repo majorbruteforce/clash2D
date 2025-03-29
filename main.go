@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image"
 	"log"
 
 	_ "image/png"
@@ -19,8 +18,8 @@ const (
 )
 
 var (
-	drawCount, frame = 0, 0
-	tile             *ebiten.Image
+	tileId = 0
+	tile   *ebiten.Image
 )
 
 type Game struct {
@@ -35,14 +34,11 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	if g.global.FrameIndex % 6 == 0 {
-		row := 0
-		tileX := g.mapCutout.Coordinates[frame].X
-		tileY := g.mapCutout.Coordinates[frame].Y + row*g.mapCutout.TileHeight
-		tile = g.mapImage.SubImage(image.Rect(tileX, tileY, tileX+g.mapCutout.TileWidth, tileY+g.mapCutout.TileHeight)).(*ebiten.Image)
+	if g.global.FrameIndex%7 == 0 {
+		tile = g.mapImage.SubImage(g.mapCutout.GetTileRectById(tileId)).(*ebiten.Image)
 
-		frame++
-		frame %= 8
+		tileId++
+		tileId %= 8
 	}
 
 	op := &ebiten.DrawImageOptions{}
