@@ -21,6 +21,7 @@ func NewEntity(
 	name string,
 	sheet *ebiten.Image,
 	cutout *utils.Cutout,
+	frame int,
 ) *Entity {
 	return &Entity{
 		Name:   name,
@@ -32,7 +33,7 @@ func NewEntity(
 			Dx int
 			Dy int
 		}{X: 0, Y: 0, Dx: 0, Dy: 0},
-		Frame:      0,
+		Frame:      frame,
 		Visible:    true,
 		Properties: struct{}{},
 	}
@@ -51,5 +52,3 @@ func (e *Entity) UpdateFrame(start, end, step, speed, tickIndex int) {
 		e.Frame = start
 	}
 }
-
-

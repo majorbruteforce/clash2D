@@ -1,15 +1,13 @@
 package main
 
 import (
+	_ "image/png"
 	"log"
 
-	_ "image/png"
-
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 
 	"clash2D/internals/core"
-	"clash2D/pkg/utils"
+	"clash2D/internals/entities"
 )
 
 type Game struct {
@@ -19,7 +17,7 @@ type Game struct {
 
 func (g *Game) Update() error {
 
-	g.Lucy.UpdateFrame(0, 7, 1, 6, g.global.TickIndex)
+	g.Lucy.UpdateFrame(9, 16, 1, 6, g.global.TickIndex)
 
 	if ebiten.IsKeyPressed(ebiten.KeyUp) {
 		g.Lucy.Position.Y -= 2
@@ -55,26 +53,16 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func main() {
 
-	img, _, err := ebitenutil.NewImageFromFile("./static/assets/8Direction_TopDown_Character Sprites_ByBossNelNel/SpriteSheet.png")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	lucy := core.NewEntity(
-		"Lucy",
-		img,
-		utils.NewCutout(209, 326, 9, 9),
-	)
-
 	ebiten.SetWindowSize(640, 480)
 	ebiten.SetWindowTitle("Tilemap Test")
 	game := &Game{
-		Lucy:   lucy,
+		Lucy:   entities.LoadLucy(),
 		global: core.NewGlobal(&core.DefaultGlobalConfig),
 	}
 
-	err = ebiten.RunGame(game)
+	err := ebiten.RunGame(game)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
