@@ -46,7 +46,7 @@ func NewCutout(sheetWidth, sheetHeight int, tilesPerRow, numberOfRows int) *Cuto
 	return newCutout
 }
 
-func (c *Cutout) GetTileRectById(id int) image.Rectangle {
+func (c *Cutout) GetTileRectangleById(id int) image.Rectangle {
 	tileX := c.Coordinates[id].X
 	tileY := c.Coordinates[id].Y
 	rect := image.Rect(tileX, tileY, tileX+c.TileWidth, tileY+c.TileHeight)

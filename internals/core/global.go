@@ -1,31 +1,34 @@
 package core
 
+import "clash2D/pkg/console"
+
 type Global struct {
-	FrameIndex int
-	TickIndex  int
-	FPS        int
-	TPS        int
+	frameIndex int
+	tickIndex  int
+	fps        int
+	tps        int
+	*console.KeyBuffer
 }
 
 type GlobalConfig struct {
-	FPS int
-	TPS int
+	fps int
+	tps int
 }
 
 var (
 	DefaultGlobalConfig = GlobalConfig{
-		FPS: 60,
-		TPS: 60,
+		fps: 60,
+		tps: 60,
 	}
 )
 
 func NewGlobal(config *GlobalConfig) *Global {
 
 	global := &Global{
-		FrameIndex: 0,
-		TickIndex:  0,
-		FPS:        config.FPS,
-		TPS:        config.TPS,
+		frameIndex: 0,
+		tickIndex:  0,
+		fps:        config.fps,
+		tps:        config.tps,
 	}
 
 	return global
@@ -33,12 +36,22 @@ func NewGlobal(config *GlobalConfig) *Global {
 
 // Invoke for every draw iteration to maintain draw count
 func (g *Global) RunFrameIndexCycle() {
-	g.FrameIndex++
-	g.FrameIndex %= g.FPS
+	g.frameIndex++
+	g.frameIndex %= g.fps
 }
 
 // Invoke for every update iteration to maintain draw count
 func (g *Global) RunTickIndexCycle() {
-	g.TickIndex++
-	g.TickIndex %= g.TPS
+	g.tickIndex++
+	g.tickIndex %= g.tps
 }
+
+func (g *Global) FrameIndex() int {
+	return g.frameIndex
+}
+
+func (g *Global) TickIndex() int {
+	return g.tickIndex
+}
+
+

@@ -1,7 +1,6 @@
-package entities
+package character
 
 import (
-	"clash2D/internals/core"
 	"clash2D/pkg/config"
 	"clash2D/pkg/utils"
 	"log"
@@ -10,17 +9,17 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-func LoadLucy() *core.Entity {
+func LoadLucy() *Character {
 
 	path := filepath.Join(config.RootDir, "assets", "8Direction_TopDown_Character Sprites_ByBossNelNel", "SpriteSheet.png")
-	img, _, err := ebitenutil.NewImageFromFile(path)
+	sheet, _, err := ebitenutil.NewImageFromFile(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	Lucy := core.NewEntity(
+	Lucy := NewCharacter(
 		"Lucy",
-		img,
+		sheet,
 		utils.NewCutout(209, 326, 9, 9),
 		9,
 	)
