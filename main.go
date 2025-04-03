@@ -14,28 +14,20 @@ import (
 
 type Game struct {
 	Lucy    *character.Character
+	Stella  *character.Character
 	BaseMap *atmopshere.Map
-	*core.Global
 }
 
 func (g *Game) Update() error {
-	g.RunTickIndexCycle()
+	core.Gb.RunTickIndexCycle()
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
 
-	g.BaseMap.Render(200, 0, screen)
-
-	g.Lucy.RunSequence(g.TickIndex(), character.LucySequences["WalkSW"])
-
-	op := &ebiten.DrawImageOptions{}
-	lucySubImage := g.Lucy.Sheet.SubImage(g.Lucy.Cutout.GetTileRectangleById(g.Lucy.Frame())).(*ebiten.Image)
-
-	op.GeoM.Translate(160, 120)
-	screen.DrawImage(lucySubImage, op)
-
-	g.RunFrameIndexCycle()
+	g.BaseMap.Render(screen)
+	g.Lucy.Render(screen)
+	g.Stella.Render(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -49,7 +41,7 @@ func main() {
 
 	game := &Game{
 		Lucy:   character.LoadLucy(),
-		Global: core.NewGlobal(&core.DefaultGlobalConfig),
+		Stella: character.LoadStella(),
 		BaseMap: atmopshere.NewMap(
 			path.Join(config.RootDir, "assets", "test.json"),
 			path.Join(config.RootDir, "assets", "tileset.png"),

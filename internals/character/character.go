@@ -1,6 +1,7 @@
 package character
 
 import (
+	"clash2D/internals/core"
 	"clash2D/pkg/utils"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -44,8 +45,9 @@ func (c *Character) SetFrame(id int) {
 	c.frame = id
 }
 
-func (c *Character) RunSequence(tickIndex int, seq AnimationSequence) {
-	if tickIndex%seq.Speed != 0 {
+func (c *Character) RunSequence(seq AnimationSequence) {
+
+	if core.Gb.TickIndex()%seq.Speed != 0 {
 		return
 	}
 
@@ -53,4 +55,28 @@ func (c *Character) RunSequence(tickIndex int, seq AnimationSequence) {
 	if c.frame > seq.End {
 		c.frame = seq.Start
 	}
+}
+
+func (c *Character) Render(screen *ebiten.Image) {
+
+	op := &ebiten.DrawImageOptions{}
+
+	// scale
+	scaleFactor := float64(core.Gb.UnitSize()) / float64(c.Cutout.TileHeight)
+	op.GeoM.Scale(scaleFactor, scaleFactor)
+
+	// transform
+	originX, originY := core.Gb.Origin()
+	c.Position.X += c.Position.Dx
+	c.Position.Y += c.Position.Dy
+
+	op.GeoM.Translate(c.Position.X, c.Position.Y)
+	op.GeoM.Translate(float64(originX), float64(originY))
+	op.GeoM.Translate(-float64(c.Cutout.TileWidth)*scaleFactor/2, -float64(c.Cutout.TileHeight)*scaleFactor/2)
+
+	c.Position.Dx, c.Position.Dy = 0, 0
+
+	// frame
+	characterSubImage := c.Sheet.SubImage(c.Cutout.GetTileRectangleById(c.frame)).(*ebiten.Image)
+	screen.DrawImage(characterSubImage, op)
 }

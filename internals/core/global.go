@@ -1,38 +1,31 @@
 package core
 
-import "clash2D/pkg/console"
-
+type GlobalConfig struct {
+	fps      int
+	tps      int
+	originX  int
+	originY  int
+	unitSize int
+}
 type Global struct {
 	frameIndex int
 	tickIndex  int
 	fps        int
 	tps        int
-	*console.KeyBuffer
-}
-
-type GlobalConfig struct {
-	fps int
-	tps int
+	originX    int
+	originY    int
+	unitSize   int // in px
 }
 
 var (
 	DefaultGlobalConfig = GlobalConfig{
-		fps: 60,
-		tps: 60,
+		fps:      60,
+		tps:      60,
+		unitSize: 32,
+		originX:  100,
+		originY:  100,
 	}
 )
-
-func NewGlobal(config *GlobalConfig) *Global {
-
-	global := &Global{
-		frameIndex: 0,
-		tickIndex:  0,
-		fps:        config.fps,
-		tps:        config.tps,
-	}
-
-	return global
-}
 
 // Invoke for every draw iteration to maintain draw count
 func (g *Global) RunFrameIndexCycle() {
@@ -54,4 +47,28 @@ func (g *Global) TickIndex() int {
 	return g.tickIndex
 }
 
+func (g *Global) UnitSize() int {
+	return g.unitSize
+}
 
+func (g *Global) Origin() (int, int) {
+	return g.originX, g.originY
+}
+
+func (g *Global) SetValues(config *GlobalConfig) {
+	g.fps = config.fps
+	g.tps = config.tps
+	g.unitSize = config.unitSize
+	g.originX = config.originX
+	g.originY = config.originY
+}
+
+var Gb = Global{
+	frameIndex: 0,
+	tickIndex:  0,
+	fps:        DefaultGlobalConfig.fps,
+	tps:        DefaultGlobalConfig.tps,
+	originX:    DefaultGlobalConfig.originX,
+	originY:    DefaultGlobalConfig.originY,
+	unitSize:   DefaultGlobalConfig.unitSize,
+}

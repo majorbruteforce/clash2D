@@ -1,6 +1,7 @@
 package atmopshere
 
 import (
+	"clash2D/internals/core"
 	"clash2D/pkg/exception"
 	"clash2D/pkg/utils"
 
@@ -29,8 +30,9 @@ func NewMap(jsonPath string, imagePath string, imageHeigth, imageWidth, tilesPer
 	}
 }
 
-func (m *Map) Render(originX, originY int, screen *ebiten.Image) {
+func (m *Map) Render(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
+	originX, originY := core.Gb.Origin()
 
 	for _, layer := range m.Layers {
 		for idx, tileId := range layer.Data {

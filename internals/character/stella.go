@@ -9,20 +9,20 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 )
 
-func LoadLucy() *Character {
+func LoadStella() *Character {
 
-	path := filepath.Join(config.RootDir, "assets", "8Direction_TopDown_Character Sprites_ByBossNelNel", "SpriteSheet.png")
+	path := filepath.Join(config.RootDir, "assets", "stella_walk_1.png")
 	sheet, _, err := ebitenutil.NewImageFromFile(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	Lucy := NewCharacter(
-		"Lucy",
+	Stella := NewCharacter(
+		"Stella",
 		sheet,
-		utils.NewCutout(209, 326, 9, 9),
+		utils.NewCutout(256, 512, 4, 8),
 		0,
 	)
 
-	return Lucy
+	return Stella
 }
