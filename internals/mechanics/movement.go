@@ -29,10 +29,10 @@ var translationValueMap = map[[2]int][2]float64{
 	{-1, -1}: {-1 / math.Sqrt2, -1 / math.Sqrt2}, // Up-Left
 }
 
-func GetTransltionXY(speed int, key1 ebiten.Key, opKey ...ebiten.Key) (x, y float64) {
+func GetTransltionXY(speed float64, key1 ebiten.Key, opKey ...ebiten.Key) (x, y float64) {
 	if len(opKey) == 0 {
 		t := translationKeyMap[key1]
-		return float64(speed * t[0]), float64(speed * t[1])
+		return float64(t[0]) * speed, float64(t[1]) * speed
 	}
 
 	netX, netY := translationKeyMap[key1][0]+translationKeyMap[opKey[0]][0], translationKeyMap[key1][1]+translationKeyMap[opKey[0]][1]
@@ -42,6 +42,3 @@ func GetTransltionXY(speed int, key1 ebiten.Key, opKey ...ebiten.Key) (x, y floa
 	return float64(speed) * t[0], float64(speed) * t[1]
 }
 
-// Make a channel to capture key presses in each tick, store in a container
-// at the end of the tick, evaluate the last two values captured
-// cleanup the container

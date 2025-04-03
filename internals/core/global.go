@@ -23,7 +23,7 @@ var (
 		tps:      60,
 		unitSize: 32,
 		originX:  100,
-		originY:  100,
+		originY:  0,
 	}
 )
 

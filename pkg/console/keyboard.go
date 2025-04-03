@@ -1,31 +1,74 @@
 package console
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
+)
 
 type KeyBuffer struct {
-	MovementKeys []ebiten.Key
+	Data    map[ebiten.Key]struct{}
+	Queue   []ebiten.Key
+	length  int
+	keyList []ebiten.Key
 }
 
-var movementControls = []ebiten.Key{
-	ebiten.KeyUp,
-	ebiten.KeyLeft,
-	ebiten.KeyDown,
-	ebiten.KeyRight,
-	ebiten.KeyW,
-	ebiten.KeyA,
-	ebiten.KeyS,
-	ebiten.KeyD,
+func NewKeyBuffer(length int, keyList []ebiten.Key) *KeyBuffer {
+	return &KeyBuffer{
+		Data:    make(map[ebiten.Key]struct{}),
+		Queue:   []ebiten.Key{},
+		length:  length,
+		keyList: keyList,
+	}
 }
 
-func (k *KeyBuffer) checkMovementKey(key ebiten.Key) {
-	for _, moveKey := range movementControls {
-		if moveKey == key {
-			k.MovementKeys = append(k.MovementKeys, key)
-			return
+func (k *KeyBuffer) Load(key ebiten.Key) {
+
+	if _, found := k.Data[key]; found {
+		return
+	}
+
+	if len(k.Queue) == k.length {
+		removed := k.Queue[0]
+		k.Queue = k.Queue[1:]
+		delete(k.Data, removed)
+	}
+
+	k.Queue = append(k.Queue, key)
+	k.Data[key] = struct{}{}
+}
+
+func (k *KeyBuffer) Unload(key ebiten.Key) {
+	if _, found := k.Data[key]; !found {
+		return
+	}
+
+	delete(k.Data, key)
+
+	for i, v := range k.Queue {
+		if v == key {
+			k.Queue = append(k.Queue[:i], k.Queue[i+1:]...)
+			break
 		}
 	}
 }
 
-func (k *KeyBuffer) HandleKeyPressEvents(key ebiten.Key) {
-	k.checkMovementKey(key)
+func (k *KeyBuffer) Values() []ebiten.Key {
+	var values []ebiten.Key
+	for value := range k.Data {
+		values = append(values, value)
+	}
+
+	return values
+}
+
+func (k *KeyBuffer) MonitorKeys() {
+	for _, key := range k.keyList {
+		if inpututil.IsKeyJustPressed(key) {
+			k.Load(key)
+		}
+
+		if inpututil.IsKeyJustReleased(key) {
+			k.Unload(key)
+		}
+	}
 }

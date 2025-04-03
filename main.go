@@ -19,6 +19,7 @@ type Game struct {
 }
 
 func (g *Game) Update() error {
+
 	core.Gb.RunTickIndexCycle()
 	return nil
 }
@@ -27,11 +28,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	g.BaseMap.Render(screen)
 	g.Lucy.Render(screen)
-	g.Stella.Render(screen)
+	// g.Stella.Render(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return 320, 240
+	return 160, 120
 }
 
 func main() {
