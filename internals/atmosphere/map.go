@@ -4,9 +4,11 @@ import (
 	"clash2D/internals/core"
 	"clash2D/pkg/exception"
 	"clash2D/pkg/utils"
+	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type Map struct {
@@ -42,7 +44,7 @@ func (m *Map) Render(screen *ebiten.Image) {
 				continue
 			}
 
-			highlight := m.Sheet.SubImage(m.Cutout.GetTileRectangleById(97)).(*ebiten.Image)
+			// highlight := m.Sheet.SubImage(m.Cutout.GetTileRectangleById(97)).(*ebiten.Image)
 
 			tile := m.Sheet.SubImage(m.Cutout.GetTileRectangleById(tileId - 1)).(*ebiten.Image)
 
@@ -58,31 +60,33 @@ func (m *Map) Render(screen *ebiten.Image) {
 			// - float64(m.Cutout.TileHeight/2)
 
 			op.GeoM.Reset()
+			op.ColorM.Reset()
 			op.GeoM.Translate(screenX, screenY)
 
 			screen.DrawImage(tile, op)
 
+			pointA, pointB, pointC, pointD := m.getIsometricCoordinates(screenX, screenY)
+			cursorX, cursorY := ebiten.CursorPosition()
+			if isPointInRhombus(float64(cursorX), float64(cursorY), pointA, pointB, pointC, pointD) {
+
+				highlight := m.Sheet.SubImage(m.Cutout.GetTileRectangleById(66)).(*ebiten.Image)
+				op.ColorM.Scale(1, 1, 1, 0.5)
+
+				screen.DrawImage(highlight, op)
+				if ebiten.IsMouseButtonPressed(ebiten.MouseButton0) {
+					layer.Data[idx] = 67
+				}
+			}
 			if m.Debug {
-				cursorX, cursorY := ebiten.CursorPosition()
-
-				pointA, pointB, pointC, pointD := m.getIsometricCoordinates(screenX, screenY)
-
-				// vector.StrokeLine(screen, pointA.x, pointA.y, pointB.x, pointB.y, 1, color.RGBA{255, 0, 0, 100}, false)
-				// vector.StrokeLine(screen, pointC.x, pointC.y, pointB.x, pointB.y, 1, color.RGBA{255, 0, 0, 100}, false)
-				// vector.StrokeLine(screen, pointC.x, pointC.y, pointD.x, pointD.y, 1, color.RGBA{255, 0, 0, 100}, false)
-				// vector.StrokeLine(screen, pointA.x, pointA.y, pointD.x, pointD.y, 1, color.RGBA{255, 0, 0, 100}, false)
-
-				if isPointInRhombus(float64(cursorX), float64(cursorY), pointA, pointB, pointC, pointD) {
-					screen.DrawImage(highlight, op)
-					if ebiten.IsMouseButtonPressed(ebiten.MouseButton0) {
-						layer.Data[idx] = 67
-					}
+				if layer.Data[idx] == 67 {
+					m.strokeTile(screen, pointA, pointB, pointC, pointD)
 				}
 			}
 		}
 	}
 }
 
+// Barycentric Coordinates
 func isPointInTriangle(px, py float64, A, B, C struct{ x, y float32 }) bool {
 	ax, ay := float64(A.x), float64(A.y)
 	bx, by := float64(B.x), float64(B.y)
@@ -120,4 +124,12 @@ func (m *Map) getIsometricCoordinates(screenX, screenY float64) (a, b, c, d stru
 
 	return pointA, pointB, pointC, pointD
 
+}
+
+func (m *Map) strokeTile(screen *ebiten.Image, pointA, pointB, pointC, pointD struct{ x, y float32 }) {
+
+	vector.StrokeLine(screen, pointA.x, pointA.y, pointB.x, pointB.y, 1, color.RGBA{255, 0, 0, 100}, false)
+	vector.StrokeLine(screen, pointC.x, pointC.y, pointB.x, pointB.y, 1, color.RGBA{255, 0, 0, 100}, false)
+	vector.StrokeLine(screen, pointC.x, pointC.y, pointD.x, pointD.y, 1, color.RGBA{255, 0, 0, 100}, false)
+	vector.StrokeLine(screen, pointA.x, pointA.y, pointD.x, pointD.y, 1, color.RGBA{255, 0, 0, 100}, false)
 }
