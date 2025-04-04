@@ -78,5 +78,6 @@ func (c *Character) Render(screen *ebiten.Image) {
 
 	// frame
 	characterSubImage := c.Sheet.SubImage(c.Cutout.GetTileRectangleById(c.frame)).(*ebiten.Image)
+	op.Filter = ebiten.FilterLinear
 	screen.DrawImage(characterSubImage, op)
 }

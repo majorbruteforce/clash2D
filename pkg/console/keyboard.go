@@ -61,14 +61,16 @@ func (k *KeyBuffer) Values() []ebiten.Key {
 	return values
 }
 
-func (k *KeyBuffer) MonitorKeys() {
+func (k *KeyBuffer) MonitorKeys(onLoad, onUnload func(ebiten.Key)) {
 	for _, key := range k.keyList {
 		if inpututil.IsKeyJustPressed(key) {
 			k.Load(key)
+			onLoad(key)
 		}
 
 		if inpututil.IsKeyJustReleased(key) {
 			k.Unload(key)
+			onUnload(key)
 		}
 	}
 }

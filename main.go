@@ -3,6 +3,7 @@ package main
 import (
 	"clash2D/internals/atmopshere"
 	"clash2D/internals/character"
+	"clash2D/internals/controls"
 	"clash2D/internals/core"
 	"clash2D/pkg/config"
 	_ "image/png"
@@ -20,6 +21,9 @@ type Game struct {
 
 func (g *Game) Update() error {
 
+	controls.ActuateTranslation(0.5, g.Stella)
+	controls.ControlBuffer.Movement.MonitorKeys(f, f)
+
 	core.Gb.RunTickIndexCycle()
 	return nil
 }
@@ -27,12 +31,16 @@ func (g *Game) Update() error {
 func (g *Game) Draw(screen *ebiten.Image) {
 
 	g.BaseMap.Render(screen)
-	g.Lucy.Render(screen)
-	// g.Stella.Render(screen)
+	// g.Lucy.Render(screen)
+	g.Stella.Render(screen)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return 160, 120
+}
+
+func f(k ebiten.Key) {
+	return
 }
 
 func main() {
