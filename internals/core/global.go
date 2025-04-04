@@ -22,8 +22,8 @@ var (
 		fps:      60,
 		tps:      60,
 		unitSize: 32,
-		originX:  500,
-		originY:  200,
+		originX:  100,
+		originY:  100,
 	}
 )
 
@@ -53,6 +53,11 @@ func (g *Global) UnitSize() int {
 
 func (g *Global) Origin() (int, int) {
 	return g.originX, g.originY
+}
+
+func (g *Global) UpdateOrigin(x, y int) {
+	g.originX += x
+	g.originY += y
 }
 
 func (g *Global) SetValues(config *GlobalConfig) {
