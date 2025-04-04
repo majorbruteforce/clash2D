@@ -3,7 +3,6 @@ package main
 import (
 	"clash2D/internals/atmopshere"
 	"clash2D/internals/character"
-	"clash2D/internals/controls"
 	"clash2D/internals/core"
 	"clash2D/pkg/config"
 	_ "image/png"
@@ -11,6 +10,7 @@ import (
 	"path"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type Game struct {
@@ -21,8 +21,9 @@ type Game struct {
 
 func (g *Game) Update() error {
 
-	controls.ActuateTranslation(0.5, g.Stella)
-	controls.ControlBuffer.Movement.MonitorKeys(f, f)
+	if inpututil.IsKeyJustPressed(ebiten.KeyF11) {
+		ToggleFullscreen()
+	}
 
 	core.Gb.RunTickIndexCycle()
 	return nil
@@ -36,17 +37,18 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return 160, 120
+	return 960, 540
 }
 
-func f(k ebiten.Key) {
-	return
+func ToggleFullscreen() {
+	ebiten.SetFullscreen(!ebiten.IsFullscreen())
 }
 
 func main() {
 
-	ebiten.SetWindowSize(640, 480)
+	ebiten.SetWindowSize(1920, 1080)
 	ebiten.SetWindowTitle("Tilemap Test")
+	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	game := &Game{
 		Lucy:   character.LoadLucy(),
