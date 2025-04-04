@@ -4,13 +4,9 @@ import (
 	"clash2D/internals/core"
 	"clash2D/pkg/exception"
 	"clash2D/pkg/utils"
-	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/text"
-	"github.com/hajimehoshi/ebiten/v2/vector"
-	"golang.org/x/image/font/basicfont"
 )
 
 type Map struct {
@@ -64,35 +60,64 @@ func (m *Map) Render(screen *ebiten.Image) {
 			op.GeoM.Reset()
 			op.GeoM.Translate(screenX, screenY)
 
-			if false {
-				screen.DrawImage(highlight, op)
-				text.Draw(screen, "Focused!", basicfont.Face7x13, 100, 900, color.White)
-			} else {
-				screen.DrawImage(tile, op)
-			}
-			if m.Debug {
-				pointA := struct{ x, y float32 }{
-					x: float32(screenX),
-					y: float32(screenY) + float32(m.TileHeight/2) - 4,
-				}
-				pointB := struct{ x, y float32 }{
-					x: float32(screenX) + float32(m.TileWidth/2),
-					y: float32(screenY) + float32(m.TileHeight/4) - 4,
-				}
-				pointC := struct{ x, y float32 }{
-					x: float32(screenX) + float32(m.TileWidth),
-					y: float32(screenY) + float32(m.TileHeight/2) - 4,
-				}
-				pointD := struct{ x, y float32 }{
-					x: float32(screenX) + float32(m.TileWidth/2),
-					y: float32(screenY) + float32(m.TileHeight*3/4) - 4,
-				}
+			screen.DrawImage(tile, op)
 
-				vector.StrokeLine(screen, pointA.x, pointA.y, pointB.x, pointB.y, 1, color.RGBA{255, 0, 0, 100}, false)
-				vector.StrokeLine(screen, pointC.x, pointC.y, pointB.x, pointB.y, 1, color.RGBA{255, 0, 0, 100}, false)
-				vector.StrokeLine(screen, pointC.x, pointC.y, pointD.x, pointD.y, 1, color.RGBA{255, 0, 0, 100}, false)
-				vector.StrokeLine(screen, pointA.x, pointA.y, pointD.x, pointD.y, 1, color.RGBA{255, 0, 0, 100}, false)
+			if m.Debug {
+				cursorX, cursorY := ebiten.CursorPosition()
+
+				pointA, pointB, pointC, pointD := m.getIsometricCoordinates(screenX, screenY)
+
+				// vector.StrokeLine(screen, pointA.x, pointA.y, pointB.x, pointB.y, 1, color.RGBA{255, 0, 0, 100}, false)
+				// vector.StrokeLine(screen, pointC.x, pointC.y, pointB.x, pointB.y, 1, color.RGBA{255, 0, 0, 100}, false)
+				// vector.StrokeLine(screen, pointC.x, pointC.y, pointD.x, pointD.y, 1, color.RGBA{255, 0, 0, 100}, false)
+				// vector.StrokeLine(screen, pointA.x, pointA.y, pointD.x, pointD.y, 1, color.RGBA{255, 0, 0, 100}, false)
+
+				if isPointInRhombus(float64(cursorX), float64(cursorY), pointA, pointB, pointC, pointD) {
+					screen.DrawImage(highlight, op)
+					if ebiten.IsMouseButtonPressed(ebiten.MouseButton0) {
+						layer.Data[idx] = 67
+					}
+				}
 			}
 		}
 	}
+}
+
+func isPointInTriangle(px, py float64, A, B, C struct{ x, y float32 }) bool {
+	ax, ay := float64(A.x), float64(A.y)
+	bx, by := float64(B.x), float64(B.y)
+	cx, cy := float64(C.x), float64(C.y)
+
+	denominator := (by-cy)*(ax-cx) + (cx-bx)*(ay-cy)
+	alpha := ((by-cy)*(px-cx) + (cx-bx)*(py-cy)) / denominator
+	beta := ((cy-ay)*(px-cx) + (ax-cx)*(py-cy)) / denominator
+	gamma := 1 - alpha - beta
+
+	return alpha >= 0 && beta >= 0 && gamma >= 0
+}
+
+func isPointInRhombus(px, py float64, A, B, C, D struct{ x, y float32 }) bool {
+	return isPointInTriangle(px, py, A, B, C) || isPointInTriangle(px, py, A, C, D)
+}
+
+func (m *Map) getIsometricCoordinates(screenX, screenY float64) (a, b, c, d struct{ x, y float32 }) {
+	pointA := struct{ x, y float32 }{
+		x: float32(screenX),
+		y: float32(screenY) + float32(m.TileHeight/2) - 3,
+	}
+	pointB := struct{ x, y float32 }{
+		x: float32(screenX) + float32(m.TileWidth/2),
+		y: float32(screenY) + float32(m.TileHeight/4) - 3,
+	}
+	pointC := struct{ x, y float32 }{
+		x: float32(screenX) + float32(m.TileWidth),
+		y: float32(screenY) + float32(m.TileHeight/2) - 3,
+	}
+	pointD := struct{ x, y float32 }{
+		x: float32(screenX) + float32(m.TileWidth/2),
+		y: float32(screenY) + float32(m.TileHeight*3/4) - 3,
+	}
+
+	return pointA, pointB, pointC, pointD
+
 }
