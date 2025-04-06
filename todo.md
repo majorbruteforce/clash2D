@@ -9,7 +9,7 @@
     ⬜ Cursor Position
     ✅ Stroke Colliders
     ⬜ Grid
-⬜ Console
+✅ Scene Manager
 ⬜ Map
     ⬜ TileMap Reader
     ⬜ Rendering
@@ -26,9 +26,9 @@
     ⬜ Greedy path finding
     ⬜ Cone of Vision/ Vision radius
     ⬜ Behaviour State Machine
+⬜ Console
 ⬜ Build System
 ⬜ HUD
-⬜ Scene Manager
 ⬜ Audio
 
 
