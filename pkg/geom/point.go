@@ -1,13 +1,15 @@
 package geom
 
-import "image"
+type Point struct {
+	X, Y float32
+}
 
-func IsPointInTriangle(p, A, B, C image.Point) bool {
+func IsPointInTriangle(p, A, B, C Point) bool {
 
-	px, py := float64(p.X), float64(p.Y)
-	ax, ay := float64(A.X), float64(A.Y)
-	bx, by := float64(B.X), float64(B.Y)
-	cx, cy := float64(C.X), float64(C.Y)
+	px, py := p.X, p.Y
+	ax, ay := A.X, A.Y
+	bx, by := B.X, B.Y
+	cx, cy := C.X, C.Y
 
 	denominator := (by-cy)*(ax-cx) + (cx-bx)*(ay-cy)
 
