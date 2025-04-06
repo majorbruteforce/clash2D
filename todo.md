@@ -13,9 +13,9 @@
 ⬜ Map
     ⬜ TileMap Reader
     ⬜ Rendering
-⬜ Sprite
-    ⬜ Cutout
-    ⬜ Image import
+✅ Sprite
+    ✅ Cutout
+    ✅ Image import
 ⬜ Character
 ⬜ Physics
     ⬜ Movement

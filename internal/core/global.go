@@ -6,12 +6,14 @@ type Global struct {
 	fps        int
 	tps        int
 	unitSize   int
+	debug      bool
 }
 
 type GlobalConfig struct {
 	fps      int
 	tps      int
 	unitSize int
+	debug    bool
 }
 
 var Gb = Global{
@@ -20,6 +22,7 @@ var Gb = Global{
 	fps:        60,
 	tps:        60,
 	unitSize:   32,
+	debug:      false,
 }
 
 func (g *Global) RunFrameIndexCycle() {
@@ -44,8 +47,13 @@ func (g *Global) UnitSize() int {
 	return g.unitSize
 }
 
+func (g *Global) Debug() bool {
+	return g.debug
+}
+
 func (g *Global) SetValues(config *GlobalConfig) {
 	g.fps = config.fps
 	g.tps = config.tps
 	g.unitSize = config.unitSize
+	g.debug = config.debug
 }
