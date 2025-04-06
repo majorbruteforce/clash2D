@@ -14,6 +14,14 @@ type GlobalConfig struct {
 	unitSize int
 }
 
+var Gb = Global{
+	frameIndex: 0,
+	tickIndex:  0,
+	fps:        60,
+	tps:        60,
+	unitSize:   32,
+}
+
 func (g *Global) RunFrameIndexCycle() {
 	g.frameIndex++
 	g.frameIndex %= g.fps
@@ -40,12 +48,4 @@ func (g *Global) SetValues(config *GlobalConfig) {
 	g.fps = config.fps
 	g.tps = config.tps
 	g.unitSize = config.unitSize
-}
-
-var Gb = Global{
-	frameIndex: 0,
-	tickIndex:  0,
-	fps:        60,
-	tps:        60,
-	unitSize:   32,
 }

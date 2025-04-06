@@ -1,7 +1,10 @@
 ✅ Make Todo
 ✅ Config
 ✅ Error Handler
-⬜ Core
+✅ Core
+⬜ Geometery
+    ⬜ Rhombus
+    ⬜ Intersections/Overlaps
 ⬜ Debug
     ⬜ Cursor Position
     ⬜ Stroke Colliders
@@ -18,9 +21,6 @@
     ⬜ Movement
     ⬜ Collision
     ⬜ Attack and Damage
-⬜ Geometery
-    ⬜ Rhombus
-    ⬜ Intersections/Overlaps
 ⬜ Character Behaviour
     ⬜ A* for path finding
     ⬜ Greedy path finding
