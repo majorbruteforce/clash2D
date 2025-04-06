@@ -2,12 +2,12 @@
 ✅ Config
 ✅ Error Handler
 ✅ Core
-⬜ Geometery
-    ⬜ Rhombus
-    ⬜ Intersections/Overlaps
+✅ Geometery
+    ✅ Rhombus
+    ✅ Intersections/Overlaps
 ⬜ Debug
     ⬜ Cursor Position
-    ⬜ Stroke Colliders
+    ✅ Stroke Colliders
     ⬜ Grid
 ⬜ Console
 ⬜ Map
