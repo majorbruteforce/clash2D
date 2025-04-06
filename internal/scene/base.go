@@ -4,15 +4,15 @@ import (
 	"path"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/majorbruteforce/clash2D/internal/character"
 	"github.com/majorbruteforce/clash2D/pkg/atmosphere"
 	"github.com/majorbruteforce/clash2D/pkg/config"
-	"github.com/majorbruteforce/clash2D/pkg/sprite"
 )
 
 type Base struct {
 	title string
 	Map   *atmosphere.Map
-	Lucy  *sprite.Cutout
+	Lucy  *character.Character
 }
 
 var BaseScene = Base{
@@ -22,7 +22,8 @@ var BaseScene = Base{
 		path.Join(config.RootDir, "assets", "maps", "tileset-1.json"),
 		11, 11,
 	),
-	Lucy: sprite.NewCutout(
+	Lucy: character.NewCharacter(
+		"Lucy",
 		path.Join(config.RootDir, "assets", "characters", "lucy_walk.png"),
 		9, 9,
 	),
@@ -30,8 +31,10 @@ var BaseScene = Base{
 
 func (b *Base) Draw(screen *ebiten.Image) {
 	b.Map.Render(screen)
+	b.Lucy.Render(screen)
 }
 
 func (b *Base) Update() error {
+	b.Lucy.RunSequence(character.LucySequences["WalkS"])
 	return nil
 }

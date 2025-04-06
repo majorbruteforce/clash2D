@@ -10,9 +10,9 @@
     ✅ Stroke Colliders
     ⬜ Grid
 ✅ Scene Manager
-⬜ Map
-    ⬜ TileMap Reader
-    ⬜ Rendering
+✅ Map
+    ✅ TileMap Reader
+    ✅ Rendering
 ✅ Sprite
     ✅ Cutout
     ✅ Image import

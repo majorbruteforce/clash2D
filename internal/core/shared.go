@@ -15,6 +15,6 @@ func (s *Shared) UpdateOrigin(x, y int) {
 }
 
 var Sh = Shared{
-	originX: 0,
-	originY: 0,
+	originX: 100,
+	originY: 100,
 }

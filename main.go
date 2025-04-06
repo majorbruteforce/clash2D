@@ -5,6 +5,7 @@ import (
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/majorbruteforce/clash2D/internal/core"
 	"github.com/majorbruteforce/clash2D/internal/scene"
 	"github.com/majorbruteforce/clash2D/pkg/errorutils"
 )
@@ -17,6 +18,8 @@ func (g *Game) Update() error {
 	if inpututil.IsKeyJustPressed(ebiten.KeySpace) {
 		g.SceneManager.SetScene(&scene.BaseScene)
 	}
+
+	core.Gb.RunTickIndexCycle()
 	return g.SceneManager.Update()
 }
 
