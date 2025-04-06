@@ -1,17 +1,18 @@
 package config
 
 import (
-	"log"
 	"os"
+
+	"github.com/majorbruteforce/clash2D/pkg/errorutils"
 )
 
 var RootDir string
 
-func init() {
-
+func Init() {
 	dir, err := os.Getwd()
 	if err != nil {
-		log.Fatalf("Failed to get working directory: %v", err)
+		errorutils.CheckFatal(err)
 	}
+
 	RootDir = dir
 }
