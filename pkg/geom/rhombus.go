@@ -99,6 +99,6 @@ func (r *Rhombus) BoundsOverlap(rb *Rhombus) bool {
 	if minRX < maxRbX && minRbX < maxRX && minRY < maxRbY && minRbY < maxRY {
 		return true
 	}
+	
 	return false
-
 }

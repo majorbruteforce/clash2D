@@ -16,7 +16,7 @@
 ✅ Sprite
     ✅ Cutout
     ✅ Image import
-⬜ Character
+✅ Character
 ⬜ Physics
     ⬜ Movement
     ⬜ Collision

@@ -42,7 +42,7 @@ func (m *Map) Render(screen *ebiten.Image) {
 			// op.ColorM.Reset()
 			op.GeoM.Translate(screenX, screenY)
 
-			tile := m.Cutout.GetSubImageByIndex(tileId - 1)
+			tile := m.Cutout.GetTileByIndex(tileId - 1)
 			screen.DrawImage(tile, op)
 
 		}

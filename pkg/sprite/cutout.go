@@ -53,7 +53,7 @@ func NewCutout(path string, tilesPerRow, numberOfRows int) *Cutout {
 	return newCutout
 }
 
-func (c *Cutout) GetSubImageByIndex(idx int) *ebiten.Image {
+func (c *Cutout) GetTileByIndex(idx int) *ebiten.Image {
 	tileX := c.Coordinates[idx].X
 	tileY := c.Coordinates[idx].Y
 	rect := image.Rect(tileX, tileY, tileX+c.TileWidth, tileY+c.TileHeight)

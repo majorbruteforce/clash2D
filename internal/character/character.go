@@ -74,7 +74,7 @@ func (c *Character) Render(screen *ebiten.Image) {
 	c.Pos.Dx, c.Pos.Dy = 0, 0
 
 	// frame
-	characterSubImage := c.Cutout.GetSubImageByIndex(c.frame)
+	characterSubImage := c.Cutout.GetTileByIndex(c.frame)
 	op.Filter = ebiten.FilterLinear
 	screen.DrawImage(characterSubImage, op)
 }
