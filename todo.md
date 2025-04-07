@@ -5,10 +5,10 @@
 ✅ Geometery
     ✅ Rhombus
     ✅ Intersections/Overlaps
-⬜ Debug
-    ⬜ Cursor Position
+✅ Debug
+    ✅ Cursor Position
     ✅ Stroke Colliders
-    ⬜ Grid
+    ✅ Grid
 ✅ Scene Manager
 ✅ Map
     ✅ TileMap Reader
