@@ -40,7 +40,7 @@ func main() {
 		SceneManager: scene.NewManager(),
 	}
 
-	game.SceneManager.SetScene(&scene.TitleScene)
+	game.SceneManager.SetScene(&scene.BaseScene)
 
 	err := ebiten.RunGame(game)
 	errorutils.CheckFatal(err)

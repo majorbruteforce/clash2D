@@ -26,7 +26,7 @@ var Gb = Global{
 	fps:          60,
 	tps:          60,
 	unitSize:     32,
-	debug:        false,
+	debug:        true,
 	screenWidth:  1920,
 	screenHeight: 1080,
 }

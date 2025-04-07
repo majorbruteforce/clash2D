@@ -1,6 +1,8 @@
 package character
 
 import (
+	"math"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/majorbruteforce/clash2D/internal/core"
 	"github.com/majorbruteforce/clash2D/pkg/sprite"
@@ -11,6 +13,7 @@ type Character struct {
 	*sprite.Cutout
 	Pos   struct{ X, Y, Dx, Dy float64 }
 	frame int
+	Dist  struct{ X, Y float64 }
 }
 
 type AnimationSequence struct {
@@ -77,4 +80,28 @@ func (c *Character) Render(screen *ebiten.Image) {
 	characterSubImage := c.Cutout.GetTileByIndex(c.frame)
 	op.Filter = ebiten.FilterLinear
 	screen.DrawImage(characterSubImage, op)
+}
+
+func (c *Character) MoveRemainigDist() {
+
+	if core.Gb.TickIndex()%4 == 0 {
+		c.Pos.Dx = 1 * Sign(c.Dist.X)
+		c.Pos.Dy = 1 * Sign(c.Dist.Y)
+
+		if c.Dist.X != 0 {
+			c.Dist.X = Sign(c.Dist.X) * (math.Abs(c.Dist.X) - 1)
+		}
+
+		if c.Dist.Y != 0 {
+			c.Dist.Y = Sign(c.Dist.Y) * (math.Abs(c.Dist.Y) - 1)
+		}
+	}
+}
+
+func Sign(a float64) float64 {
+	if a == 0 {
+		return 0
+	}
+
+	return a / math.Abs(a)
 }
