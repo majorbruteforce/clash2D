@@ -35,6 +35,9 @@ var BaseScene = Base{
 }
 
 func (b *Base) Draw(screen *ebiten.Image) {
+
+	screen.Fill(color.RGBA{0, 200, 210, 50})
+
 	text.Draw(screen, fmt.Sprintf("DistX: %f, DistY: %f", b.Lucy.Dist.X, b.Lucy.Dist.Y), basicfont.Face7x13, 50, 50, color.White)
 	b.Map.Render(screen)
 	b.Lucy.Render(screen)
@@ -43,19 +46,51 @@ func (b *Base) Draw(screen *ebiten.Image) {
 func (b *Base) Update() error {
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
-		b.Lucy.Dist.Y = -16
+		b.Lucy.Seq = "WalkNE"
+		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
+		b.Lucy.Dist.X = 16
+		b.Lucy.Dist.Y = -8
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
-		b.Lucy.Dist.Y = 16
+		b.Lucy.Seq = "WalkSW"
+		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
+		b.Lucy.Dist.X = -16
+		b.Lucy.Dist.Y = 8
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
-		b.Lucy.Dist.X = -32
+		b.Lucy.Seq = "WalkNW"
+		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
+		b.Lucy.Dist.X = -16
+		b.Lucy.Dist.Y = -8
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyRight) {
+		b.Lucy.Seq = "WalkSE"
+		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
+		b.Lucy.Dist.X = 16
+		b.Lucy.Dist.Y = 8
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyW) {
+		b.Lucy.Seq = "WalkN"
+		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
+		b.Lucy.Dist.Y = -16
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
+		b.Lucy.Seq = "WalkS"
+		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
+		b.Lucy.Dist.Y = 16
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyA) {
+		b.Lucy.Seq = "WalkW"
+		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
+		b.Lucy.Dist.X = -32
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyD) {
+		b.Lucy.Seq = "WalkE"
+		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
 		b.Lucy.Dist.X = 32
 	}
 
+	b.Lucy.RunSequence()
 	b.Lucy.MoveRemainigDist()
-	b.Lucy.RunSequence(character.LucySequences["WalkS"])
 	return nil
 }

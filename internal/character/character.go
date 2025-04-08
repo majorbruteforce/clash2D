@@ -13,6 +13,7 @@ type Character struct {
 	*sprite.Cutout
 	Pos   struct{ X, Y, Dx, Dy float64 }
 	frame int
+	Seq   string
 	Dist  struct{ X, Y float64 }
 }
 
@@ -33,7 +34,12 @@ func NewCharacter(
 		Name:   name,
 		Cutout: sprite.NewCutout(imagePath, framesPerRow, numberOfRows),
 		Pos:    struct{ X, Y, Dx, Dy float64 }{X: 0, Y: 0, Dx: 0, Dy: 0},
-		frame:  0,
+		Dist: struct {
+			X float64
+			Y float64
+		}{X: 0, Y: 0},
+		frame: 0,
+		Seq:   "WalkS",
 	}
 }
 
@@ -45,15 +51,20 @@ func (c *Character) SetFrame(idx int) {
 	c.frame = idx
 }
 
-func (c *Character) RunSequence(seq AnimationSequence) {
+func (c *Character) RunSequence() {
 
-	if core.Gb.TickIndex()%seq.Speed != 0 {
+	if c.Dist.X == 0 && c.Dist.Y == 0 {
+		c.frame = LucySequences[c.Seq].Start
 		return
 	}
 
-	c.frame += seq.Step
-	if c.frame > seq.End {
-		c.frame = seq.Start
+	if core.Gb.TickIndex()%LucySequences[c.Seq].Speed != 0 {
+		return
+	}
+
+	c.frame += LucySequences[c.Seq].Step
+	if c.frame > LucySequences[c.Seq].End {
+		c.frame = LucySequences[c.Seq].Start
 	}
 }
 

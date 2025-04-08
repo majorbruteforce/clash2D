@@ -33,7 +33,7 @@ var LucySequences = map[string]AnimationSequence{
 	},
 	"WalkNW": AnimationSequence{
 		Start: 45,
-		End:   62,
+		End:   52,
 		Step:  1,
 		Speed: 6,
 	},
