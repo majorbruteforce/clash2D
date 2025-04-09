@@ -18,6 +18,7 @@ type Base struct {
 	title string
 	Map   *atmosphere.Map
 	Lucy  *character.Character
+	Moves []string
 }
 
 var BaseScene = Base{
@@ -32,6 +33,17 @@ var BaseScene = Base{
 		path.Join(config.RootDir, "assets", "characters", "lucy_walk.png"),
 		9, 9,
 	),
+	Moves: []string{
+		"WalkS",
+		"WalkS",
+		"WalkS",
+		"WalkS",
+		"WalkS",
+		"WalkE",
+		"WalkSE",
+		"WalkE",
+		"WalkNE",
+	},
 }
 
 func (b *Base) Draw(screen *ebiten.Image) {
@@ -68,6 +80,11 @@ func (b *Base) Update() error {
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyA) {
 		b.Lucy.Walk("WalkNW")
+	}
+
+	if len(b.Moves) > 0 && b.Lucy.Dist.X == 0 && b.Lucy.Dist.Y == 0 {
+		b.Lucy.Walk(b.Moves[0])
+		b.Moves = b.Moves[1:]
 	}
 
 	b.Lucy.RunSequence()
