@@ -50,3 +50,52 @@ var LucySequences = map[string]AnimationSequence{
 		Speed: 6,
 	},
 }
+
+func (c *Character) Walk(seq string) {
+
+	switch seq {
+	case "WalkNE":
+		c.Seq = "WalkNE"
+		c.SetFrame(LucySequences[c.Seq].Start)
+		c.Dist.X = 16
+		c.Dist.Y = -8
+
+	case "WalkSW":
+		c.Seq = "WalkSW"
+		c.SetFrame(LucySequences[c.Seq].Start)
+		c.Dist.X = -16
+		c.Dist.Y = 8
+
+	case "WalkNW":
+		c.Seq = "WalkNW"
+		c.SetFrame(LucySequences[c.Seq].Start)
+		c.Dist.X = -16
+		c.Dist.Y = -8
+
+	case "WalkSE":
+		c.Seq = "WalkSE"
+		c.SetFrame(LucySequences[c.Seq].Start)
+		c.Dist.X = 16
+		c.Dist.Y = 8
+	case "WalkN":
+		c.Seq = "WalkN"
+		c.SetFrame(LucySequences[c.Seq].Start)
+		c.Dist.Y = -16
+
+	case "WalkS":
+		c.Seq = "WalkS"
+		c.SetFrame(LucySequences[c.Seq].Start)
+		c.Dist.Y = 16
+
+	case "WalkW":
+		c.Seq = "WalkW"
+		c.SetFrame(LucySequences[c.Seq].Start)
+		c.Dist.X = -32
+
+	case "WalkE":
+		c.Seq = "WalkE"
+		c.SetFrame(LucySequences[c.Seq].Start)
+		c.Dist.X = 32
+
+	}
+}

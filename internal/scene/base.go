@@ -46,48 +46,28 @@ func (b *Base) Draw(screen *ebiten.Image) {
 func (b *Base) Update() error {
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
-		b.Lucy.Seq = "WalkNE"
-		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
-		b.Lucy.Dist.X = 16
-		b.Lucy.Dist.Y = -8
+		b.Lucy.Walk("WalkN")
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
-		b.Lucy.Seq = "WalkSW"
-		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
-		b.Lucy.Dist.X = -16
-		b.Lucy.Dist.Y = 8
+		b.Lucy.Walk("WalkS")
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
-		b.Lucy.Seq = "WalkNW"
-		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
-		b.Lucy.Dist.X = -16
-		b.Lucy.Dist.Y = -8
+		b.Lucy.Walk("WalkW")
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyRight) {
-		b.Lucy.Seq = "WalkSE"
-		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
-		b.Lucy.Dist.X = 16
-		b.Lucy.Dist.Y = 8
+		b.Lucy.Walk("WalkE")
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyW) {
-		b.Lucy.Seq = "WalkN"
-		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
-		b.Lucy.Dist.Y = -16
+		b.Lucy.Walk("WalkNE")
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyS) {
-		b.Lucy.Seq = "WalkS"
-		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
-		b.Lucy.Dist.Y = 16
-	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyA) {
-		b.Lucy.Seq = "WalkW"
-		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
-		b.Lucy.Dist.X = -32
+		b.Lucy.Walk("WalkSW")
 	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyD) {
-		b.Lucy.Seq = "WalkE"
-		b.Lucy.SetFrame(character.LucySequences[b.Lucy.Seq].Start)
-		b.Lucy.Dist.X = 32
+		b.Lucy.Walk("WalkSE")
+	}
+	if inpututil.IsKeyJustPressed(ebiten.KeyA) {
+		b.Lucy.Walk("WalkNW")
 	}
 
 	b.Lucy.RunSequence()

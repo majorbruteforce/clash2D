@@ -63,5 +63,5 @@ func (m *Map) Render(screen *ebiten.Image) {
 }
 
 func (m *Map) HighlightTile(screen *ebiten.Image, op *ebiten.DrawImageOptions) {
-	screen.DrawImage(m.GetTileByIndex(97), op)
+	screen.DrawImage(m.GetTileByIndex(1), op)
 }
